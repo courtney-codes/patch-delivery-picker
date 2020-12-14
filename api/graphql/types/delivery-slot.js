@@ -8,8 +8,8 @@ const DeliverySlot = gql`
   }
 
   type DeliverySlot {
-    date: String,
-    timeslot: AllowedTimeslot
+    date: String!
+    timeslot: AllowedTimeslot!
   }
 `;
 
