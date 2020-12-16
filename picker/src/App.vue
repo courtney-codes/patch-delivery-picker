@@ -1,22 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Picker />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import Picker from '@/components/Picker.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-  },
-  methods: {
-    Something() {
-      Get another thing
-    }
+    Picker,
   },
 };
 </script>
