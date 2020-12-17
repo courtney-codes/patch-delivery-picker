@@ -1,11 +1,21 @@
-const express = require('express');
+import express from 'express';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
+import getRoutes from './routes';
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.get('/delivery-slots', (req, res) => {
-  res.send('This works now');
-})
+const adaptor = new FileSync('./db.json');
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-})
+// Create instance of lowdb database and start server
+
+low(adaptor)
+  .then((db) => {
+    app.use('/api', getRoutes(db));
+  })
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
+    });
+  });
