@@ -1,0 +1,48 @@
+{
+  "deliverySlots": [
+    {
+      "date": "2020-12-21",
+      "slots": {
+        "AM": {
+          "booked": true
+        },
+        "PM": {
+          "booked": true
+        }
+      }
+    },
+    {
+      "date": "2020-12-23",
+      "slots": {
+        "PM": {
+          "booked": true
+        },
+        "EVE": {
+          "booked": true
+        }
+      }
+    },
+    {
+      "date": "2020-12-24",
+      "slots": {
+        "AM": {
+          "booked": true
+        },
+        "PM": {
+          "booked": true
+        }
+      }
+    },
+    {
+      "date": "2020-12-21",
+      "slots": {
+        "AM": {
+          "booked": true
+        },
+        "PM": {
+          "booked": true
+        }
+      }
+    }
+  ]
+}
