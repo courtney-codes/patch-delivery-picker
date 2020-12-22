@@ -26,7 +26,9 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
     const deliveryPeriod = Interval.fromDateTimes(start, end);
 
     // Convert that Luxon interval into an array of ISO date strings
-    const deliveryPeriodDates = deliveryPeriod.splitBy({ days: 1 }).map((date) => date.start.toISODate());
+    const deliveryPeriodDates = deliveryPeriod
+      .splitBy({ days: 1 })
+      .map((date) => date.start.toISODate());
 
     // Retrieve saved delivery slots from database (only if they are within 4 week range)
     const deliverySlotRecords = db
