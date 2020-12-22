@@ -1,8 +1,11 @@
 import express from 'express';
+import { get } from 'lodash';
 import cors from 'cors';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 import { DateTime, Interval } from 'luxon';
+import { nanoid } from 'nanoid';
+import { generateBookingSlot } from './util/helpers';
 
 const startServer = function startServer(port = process.env.PORT || 3000) {
   const app = express();
@@ -15,18 +18,19 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
   const adapter = new FileSync('./db.json');
   const db = low(adapter);
 
+  app.set('maxBookingsPerSlot', 3);
+
   app.get('/delivery-slots', cors(corsOptions), (req, res) => {
     const start = DateTime.local();
     const end = start.plus({ weeks: 4 });
     const deliveryPeriod = Interval.fromDateTimes(start, end);
 
     // Convert that Luxon interval into an array of ISO date strings
-    const deliveryPeriodDates = deliveryPeriod
-      .splitBy({ days: 1 })
-      .map((date) => date.start.toISODate());
+    const deliveryPeriodDates = deliveryPeriod.splitBy({ days: 1 }).map((date) => date.start.toISODate());
 
     // Retrieve saved delivery slots from database (only if they are within 4 week range)
-    const deliverySlotRecords = db.get('deliverySlots')
+    const deliverySlotRecords = db
+      .get('deliverySlots')
       .filter((deliverySlot) => {
         const date = DateTime.fromISO(deliverySlot.date);
         return deliveryPeriod.contains(date);
@@ -45,17 +49,8 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
       if (deliverySlot) {
         deliverySlots.push(deliverySlot);
       } else {
-      // Push a blank record with no slots to the array
-        deliverySlots.push(
-          {
-            date,
-            slots: {
-              AM: { booked: false },
-              PM: { booked: false },
-              EVE: { booked: false },
-            },
-          },
-        );
+        // Push a blank record with no slots to the array
+        deliverySlots.push(generateBookingSlot(date));
       }
     });
 
@@ -67,6 +62,39 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
     }
 
     res.json(deliverySlots);
+  });
+
+  app.post('/delivery-slots/book-slot', cors(corsOptions), (req, res) => {
+    const { date, slot } = req.body;
+
+    // Find the delivery slots by date in the db
+    const deliverySlot = db
+      .get('deliverySlots')
+      .find({ date })
+      .value();
+
+    // If the slot doesn't exist, create it with the booking added
+    if (!deliverySlot) {
+      const newSlot = generateBookingSlot(date);
+      newSlot.slots[slot].bookings.push({ id: nanoid(8), item: 'Kentia Palm' });
+
+      db.get('deliverySlots').push(newSlot).write();
+    } else {
+      // If the slot exists, ensure that the amount of bookings is not greater than the maximum
+      const existingBookings = get(deliverySlot, `slots.${slot}.bookings`);
+
+      if (existingBookings.length < app.get('maxBookingsPerSlot')) {
+        db.get('deliverySlots')
+          .find({ date })
+          .get(`slots.${slot}.bookings`)
+          .push({ id: nanoid(8), item: 'Kentia Palm' })
+          .write();
+
+        res.status(200).send('Booking successful');
+      } else {
+        res.status(500).send('There is already the maximum number of bookings allowed for this slot.');
+      }
+    }
   });
 
   app.listen(port, () => {
