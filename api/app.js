@@ -35,7 +35,7 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
       .value();
 
     // Create an empty array for dates
-    const deliverySlots = [];
+    let deliverySlots = [];
 
     // Iterate over the dates within the specified period
 
@@ -47,9 +47,24 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
         deliverySlots.push(deliverySlot);
       } else {
       // Push a blank record with no slots to the array
-        deliverySlots.push({ date, slots: {} });
+        deliverySlots.push(
+          {
+            date,
+            slots: {
+              AM: { booked: false },
+              PM: { booked: false },
+              EVE: { booked: false },
+            },
+          },
+        );
       }
     });
+
+    const firstDeliverySlot = Object.values(deliverySlots[0].slots);
+
+    if (firstDeliverySlot.every((slot) => slot.booked === true)) {
+      deliverySlots = deliverySlots.slice(1);
+    }
 
     res.json(deliverySlots);
   });
