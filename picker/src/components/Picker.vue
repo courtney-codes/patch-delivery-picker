@@ -62,10 +62,15 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin: 32px 64px;
+  padding: 32px 0 64px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid lightgrey;
 }
 
 .picker-grid {
-  width: 75%;
+  width: 80%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-flow: column;

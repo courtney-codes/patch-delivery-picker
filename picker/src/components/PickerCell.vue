@@ -6,12 +6,14 @@
       data-testid="picker-cell-button"
       :tabindex="disabledTabIndex"
     >
-      {{ value }}
+      {{ slotDisplayLabel }}
       <span v-if="hasExistingBooking">Booked</span>
     </button>
 </template>
 
 <script>
+import { DELIVERY_SLOT_LABELS } from '@/util/constants';
+
 export default {
   props: {
     value: {
@@ -43,6 +45,9 @@ export default {
     disabledTabIndex() {
       return this.hasExistingBooking ? -1 : 0;
     },
+    slotDisplayLabel() {
+      return DELIVERY_SLOT_LABELS[this.value];
+    },
   },
   methods: {
     selectTimeslot() {
@@ -63,7 +68,7 @@ export default {
   border-radius: 8px;
   font-size: 18px;
   font-weight: 600;
-  min-width: 160px;
+  min-width: 180px;
   background: #006733;
   color: #fff;
   transition: background-color 0.3s ease, color 0.3s ease;

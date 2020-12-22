@@ -46,11 +46,12 @@ export default {
 <style lang="scss" scoped>
   .picker-column {
     display: grid;
-    grid-template-rows: minmax(auto, 72px) repeat(3, 1fr);
+    grid-template-rows: minmax(80px, auto) repeat(3, 1fr);
     row-gap: 8px;
 
   .picker-column__date {
     align-self: center;
+    font-weight: 500;
   }
 
   }
