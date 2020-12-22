@@ -1,10 +1,11 @@
 import { render, fireEvent } from '@testing-library/vue';
 import PickerColumn from '@/components/PickerColumn.vue';
+import { AVAILABLE_DELIVERY_SLOTS, DELIVERY_SLOT_LABELS } from '@/util/constants';
 
 describe('PickerColumn component', () => {
   const props = {
-    timeslots: ['AM', 'PM', 'EVE'],
-    value: '2020-12-16',
+    timeslots: AVAILABLE_DELIVERY_SLOTS,
+    deliverySlot: { date: '2020-12-16', slots: {} },
   };
 
   it('should render a PickerCell for each timeslot provided', () => {
@@ -17,9 +18,11 @@ describe('PickerColumn component', () => {
   it('should emit an event containing the date value and the timeslot', async () => {
     const { getByText, emitted } = render(PickerColumn, { props });
 
-    const dateTimeslot = { date: '2020-12-16', timeslot: 'AM' };
+    const timeslot = 'AM';
 
-    const cellWithinColumn = getByText('AM');
+    const dateTimeslot = { date: '2020-12-16', timeslot };
+
+    const cellWithinColumn = getByText(DELIVERY_SLOT_LABELS[timeslot]);
     await fireEvent.click(cellWithinColumn);
     const [emittedValue] = emitted().dateTimeslotSelected[0];
 
