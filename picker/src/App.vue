@@ -6,9 +6,13 @@
 
 <script>
 import Picker from '@/components/Picker.vue';
+import 'fontsource-poppins';
 
 export default {
   name: 'App',
+  created() {
+    document.title = 'Pick your delivery slot';
+  },
   components: {
     Picker,
   },
@@ -17,7 +21,7 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Poppins, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
