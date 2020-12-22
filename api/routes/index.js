@@ -1,12 +1,12 @@
 import express from 'express';
 import deliverySlotsRoutes from './delivery-slots';
 
-const getRoutes = function getRoutes(db) {
+const routes = function getRoutes() {
   const router = express.Router();
 
-  router.use('/delivery-slots', deliverySlotsRoutes(db));
+  router.use('/delivery-slots', deliverySlotsRoutes);
 
   return router;
 };
 
-export default getRoutes;
+export default routes;
