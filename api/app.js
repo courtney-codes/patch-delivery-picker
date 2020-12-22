@@ -14,7 +14,6 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
   // Connect lowdb adapter to JSON file and make available to whole app
   const adapter = new FileSync('./db.json');
   const db = low(adapter);
-  // app.set('db', db);
 
   app.get('/delivery-slots', cors(corsOptions), (req, res) => {
     const start = DateTime.local();

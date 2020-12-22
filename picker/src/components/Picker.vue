@@ -56,10 +56,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.picker-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
 .picker-grid {
+  width: 75%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-flow: column;
   grid-gap: 16px;
+  overflow: hidden;
+  overflow-x: scroll;
 }
 </style>
