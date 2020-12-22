@@ -1,6 +1,6 @@
 <template>
   <div class="picker-column">
-    <div>{{ displayDate }}</div>
+    <div class="picker-column__date">{{ displayDate }}</div>
     <PickerCell
       v-for="(timeslot, i) in timeslots"
       :key="'timeslot' + i"
@@ -46,7 +46,13 @@ export default {
 <style lang="scss" scoped>
   .picker-column {
     display: grid;
-    grid-template-rows: minmax(auto, 120px) repeat(3, 1fr);
+    grid-template-rows: minmax(auto, 72px) repeat(3, 1fr);
     row-gap: 8px;
+
+  .picker-column__date {
+    align-self: center;
   }
+
+  }
+
 </style>
