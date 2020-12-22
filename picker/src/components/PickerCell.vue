@@ -1,13 +1,14 @@
 <template>
-  <button
-    class="picker-cell"
-    :class="pickerButtonStyles"
-    @click="selectTimeslot()"
-    data-testid="picker-cell-button"
-  >
-    {{ value }}
-    <span v-if="hasExistingBooking">Booked</span>
-  </button>
+    <button
+      class="picker-cell"
+      :class="pickerButtonStyles"
+      @click="selectTimeslot()"
+      data-testid="picker-cell-button"
+      :tabindex="disabledTabIndex"
+    >
+      {{ value }}
+      <span v-if="hasExistingBooking">Booked</span>
+    </button>
 </template>
 
 <script>
@@ -39,6 +40,9 @@ export default {
         'picker-cell--disabled': this.hasExistingBooking,
       };
     },
+    disabledTabIndex() {
+      return this.hasExistingBooking ? -1 : 0;
+    },
   },
   methods: {
     selectTimeslot() {
@@ -49,6 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .picker-cell {
   box-sizing: border-box;
   cursor: pointer;
@@ -56,14 +61,25 @@ export default {
   background: #fff;
   border: none;
   border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 160px;
+  background: #006733;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover, &:focus {
+  background: #7CBF9D;
+  color: #003C1E;
+  border: 3px solid #003C1E;
+  outline: none;
   }
 
   &--disabled {
     pointer-events: none;
-    cursor: not-allowed;
     background: lightgrey;
+    color: grey;
+
   }
 
   &--selected {
