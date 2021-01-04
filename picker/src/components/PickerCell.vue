@@ -1,14 +1,17 @@
 <template>
-    <button
-      class="picker-cell"
-      :class="pickerButtonStyles"
-      @click="selectTimeslot()"
-      data-testid="picker-cell-button"
-      :tabindex="disabledTabIndex"
+  <button
+    class="picker-cell"
+    :class="pickerButtonStyles"
+    @click="selectTimeslot()"
+    data-testid="picker-cell-button"
+    :tabindex="disabledTabIndex"
+  >
+    {{ slotDisplayLabel }}
+    <span v-if="canBeBooked" class="picker-cell__availability"
+      >{{ numberOfAvailableBookings }} available</span
     >
-      {{ slotDisplayLabel }}
-      <span v-if="hasExistingBooking">{{ availableBookings }}</span>
-    </button>
+    <span v-else class="picker-cell__availability">Unavailable</span>
+  </button>
 </template>
 
 <script>
@@ -36,11 +39,14 @@ export default {
   computed: {
     pickerButtonStyles() {
       return {
-        'picker-cell--disabled': this.hasExistingBooking,
+        'picker-cell--disabled': !this.canBeBooked,
       };
     },
+    canBeBooked() {
+      return this.numberOfAvailableBookings > 0;
+    },
     disabledTabIndex() {
-      return this.hasExistingBooking ? -1 : 0;
+      return this.canBeBooked ? -1 : 0;
     },
     slotDisplayLabel() {
       return DELIVERY_SLOT_LABELS[this.value];
@@ -59,13 +65,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .picker-cell {
   box-sizing: border-box;
   cursor: pointer;
   padding: 16px 48px;
   background: #fff;
-  border: none;
+  border: 3px solid #006733;
   border-radius: 8px;
   font-size: 18px;
   font-weight: 600;
@@ -74,18 +79,25 @@ export default {
   color: #fff;
   transition: background-color 0.3s ease, color 0.3s ease;
 
-  &:hover, &:focus {
-  background: #7CBF9D;
-  color: #003C1E;
-  border: 3px solid #003C1E;
-  outline: none;
+  .picker-cell__availability {
+    font-size: 14px;
+    font-weight: 400;
+    display: inline-block;
+  }
+
+  &:hover,
+  &:focus {
+    background: #7cbf9d;
+    color: #003c1e;
+    border: 3px solid #003c1e;
+    outline: none;
   }
 
   &--disabled {
     pointer-events: none;
     background: lightgrey;
     color: grey;
-
+    border: 3px solid lightgrey;
   }
 
   &--selected {
