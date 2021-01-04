@@ -12,7 +12,9 @@
         @dateTimeslotSelected="selectTimeslot"
       />
     </div>
-    <button @click="bookDeliverySlot(selectedTimeslot)">Book now</button>
+    <button class="picker-booking-button" @click="bookDeliverySlot(selectedTimeslot)">
+      Book now
+    </button>
   </div>
 </template>
 
@@ -76,5 +78,27 @@ export default {
   grid-gap: 16px;
   overflow: hidden;
   overflow-x: scroll;
+  margin-bottom: 32px;
+}
+
+.picker-booking-button {
+  box-sizing: border-box;
+  font-size: 18px;
+  border-radius: 32px;
+  padding: 16px 32px;
+  font-weight: 700;
+  background-color: #08e1ae;
+  border: 3px solid #006733;
+  background: #006733;
+  color: #fff;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background: #7cbf9d;
+    color: #003c1e;
+    border: 3px solid #003c1e;
+    outline: none;
+  }
 }
 </style>
