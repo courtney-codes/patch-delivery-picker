@@ -12,42 +12,33 @@
         @dateTimeslotSelected="selectTimeslot"
       />
     </div>
+    <button @click="bookDeliverySlot(selectedTimeslot)">Book now</button>
   </div>
 </template>
 
 <script>
 import PickerColumn from '@/components/PickerColumn.vue';
-import axios from 'axios';
+import { mapActions, mapState } from 'vuex';
 import { AVAILABLE_DELIVERY_SLOTS } from '@/util/constants';
 
 export default {
-  mounted() {
-    this.fetchDeliverySlots();
+  created() {
+    this.$store.dispatch('loadDeliverySlots');
   },
   data() {
     return {
-      deliverySlots: [],
       selectedTimeslot: {},
       timeslotOptions: AVAILABLE_DELIVERY_SLOTS,
     };
   },
   computed: {
-    testSlots() {
-      return Object.values(this.deliverySlots[2].slots).map((slot) => slot.booked);
-    },
+    ...mapState(['deliverySlots']),
   },
   methods: {
     selectTimeslot($event) {
       this.selectedTimeslot = $event;
     },
-    async fetchDeliverySlots() {
-      try {
-        const { data } = await axios.get('http://localhost:3000/delivery-slots');
-        this.deliverySlots = data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    ...mapActions(['bookDeliverySlot']),
   },
   components: {
     PickerColumn,
@@ -70,7 +61,7 @@ export default {
 }
 
 .picker-grid {
-  width: 80%;
+  width: (180px * 4) + (16px * 4);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-flow: column;

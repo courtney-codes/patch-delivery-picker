@@ -7,21 +7,17 @@
       :tabindex="disabledTabIndex"
     >
       {{ slotDisplayLabel }}
-      <span v-if="hasExistingBooking">Booked</span>
+      <span v-if="hasExistingBooking">{{ availableBookings }}</span>
     </button>
 </template>
 
 <script>
-import { DELIVERY_SLOT_LABELS } from '@/util/constants';
+import { DELIVERY_SLOT_LABELS, MAX_BOOKINGS_PER_SLOT } from '@/util/constants';
 
 export default {
   props: {
     value: {
       type: String,
-      required: true,
-    },
-    deliverySlot: {
-      type: Object,
       required: true,
     },
     selected: {
@@ -32,11 +28,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    deliverySlot: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
-    hasExistingBooking() {
-      return this.deliverySlot.slots[this.value]?.booked === true;
-    },
     pickerButtonStyles() {
       return {
         'picker-cell--disabled': this.hasExistingBooking,
@@ -47,6 +44,10 @@ export default {
     },
     slotDisplayLabel() {
       return DELIVERY_SLOT_LABELS[this.value];
+    },
+    numberOfAvailableBookings() {
+      const { slots } = this.deliverySlot;
+      return MAX_BOOKINGS_PER_SLOT - slots[this.value].bookings.length;
     },
   },
   methods: {

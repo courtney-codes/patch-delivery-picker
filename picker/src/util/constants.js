@@ -7,3 +7,5 @@ export const DELIVERY_SLOT_LABELS = {
   PM: 'Afternoon',
   EVE: 'Evening',
 };
+
+export const MAX_BOOKINGS_PER_SLOT = 3;
