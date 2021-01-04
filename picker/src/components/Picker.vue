@@ -18,7 +18,7 @@
 
 <script>
 import PickerColumn from '@/components/PickerColumn.vue';
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { AVAILABLE_DELIVERY_SLOTS } from '@/util/constants';
 
 export default {
@@ -38,7 +38,15 @@ export default {
     selectTimeslot($event) {
       this.selectedTimeslot = $event;
     },
-    ...mapActions(['bookDeliverySlot']),
+    async bookDeliverySlot() {
+      try {
+        await this.$store.dispatch('bookDeliverySlot', this.selectedTimeslot);
+
+        this.selectedTimeslot = {};
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   components: {
     PickerColumn,
