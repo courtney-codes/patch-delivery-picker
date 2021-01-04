@@ -23,6 +23,15 @@ const store = new Vuex.Store({
           throw new Error(error);
         });
     },
+    bookDeliverySlot({ dispatch }, timeslot) {
+      axios.post('http://localhost:3000/delivery-slots/book-slot', timeslot)
+        .then(() => {
+          dispatch('loadDeliverySlots');
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    },
   },
 });
 

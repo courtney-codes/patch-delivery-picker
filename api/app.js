@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import { get } from 'lodash';
 import cors from 'cors';
 import low from 'lowdb';
@@ -12,7 +12,11 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
   const corsOptions = {
     origin: 'http://localhost:8080',
     optionsSuccessStatus: 200,
+    methods: ['GET', 'POST'],
   };
+
+  app.use(cors(corsOptions));
+  app.use(json());
 
   // Connect lowdb adapter to JSON file and make available to whole app
   const adapter = new FileSync('./db.json');
@@ -20,7 +24,7 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
 
   app.set('maxBookingsPerSlot', 3);
 
-  app.get('/delivery-slots', cors(corsOptions), (req, res) => {
+  app.get('/delivery-slots', (req, res) => {
     const start = DateTime.local();
     const end = start.plus({ weeks: 4 });
     const deliveryPeriod = Interval.fromDateTimes(start, end);
@@ -66,8 +70,9 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
     res.json(deliverySlots);
   });
 
-  app.post('/delivery-slots/book-slot', cors(corsOptions), (req, res) => {
-    const { date, slot } = req.body;
+  app.post('/delivery-slots/book-slot', (req, res) => {
+    console.log(req.body);
+    const { date, timeslot } = req.body;
 
     // Find the delivery slots by date in the db
     const deliverySlot = db
@@ -78,17 +83,19 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
     // If the slot doesn't exist, create it with the booking added
     if (!deliverySlot) {
       const newSlot = generateBookingSlot(date);
-      newSlot.slots[slot].bookings.push({ id: nanoid(8), item: 'Kentia Palm' });
+      newSlot.slots[timeslot].bookings.push({ id: nanoid(8), item: 'Kentia Palm' });
 
       db.get('deliverySlots').push(newSlot).write();
+
+      res.status(200).send('Booking successful');
     } else {
       // If the slot exists, ensure that the amount of bookings is not greater than the maximum
-      const existingBookings = get(deliverySlot, `slots.${slot}.bookings`);
+      const existingBookings = get(deliverySlot, `slots.${timeslot}.bookings`);
 
       if (existingBookings.length < app.get('maxBookingsPerSlot')) {
         db.get('deliverySlots')
           .find({ date })
-          .get(`slots.${slot}.bookings`)
+          .get(`slots.${timeslot}.bookings`)
           .push({ id: nanoid(8), item: 'Kentia Palm' })
           .write();
 
