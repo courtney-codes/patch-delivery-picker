@@ -1,58 +1,21 @@
 {
   "deliverySlots": [
     {
-      "date": "2020-12-21",
+      "date": "2021-01-05",
       "slots": {
         "AM": {
-          "booked": false
+          "bookings": [
+            {
+              "id": "KzpOOokK",
+              "item": "Kentia Palm"
+            }
+          ]
         },
         "PM": {
-          "booked": true
+          "bookings": []
         },
         "EVE": {
-          "booked": false
-        }
-      }
-    },
-    {
-      "date": "2020-12-23",
-      "slots": {
-        "AM": {
-          "booked": false
-        },
-        "PM": {
-          "booked": true
-        },
-        "EVE": {
-          "booked": true
-        }
-      }
-    },
-    {
-      "date": "2020-12-24",
-      "slots": {
-        "AM": {
-          "booked": true
-        },
-        "PM": {
-          "booked": true
-        },
-        "EVE": {
-          "booked": false
-        }
-      }
-    },
-    {
-      "date": "2020-12-25",
-      "slots": {
-        "AM": {
-          "booked": true
-        },
-        "PM": {
-          "booked": true
-        },
-        "EVE": {
-          "booked": true
+          "bookings": []
         }
       }
     }
