@@ -16,6 +16,7 @@
 
 <script>
 import { DELIVERY_SLOT_LABELS, MAX_BOOKINGS_PER_SLOT } from '@/util/constants';
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -40,6 +41,7 @@ export default {
     pickerButtonStyles() {
       return {
         'picker-cell--disabled': !this.canBeBooked,
+        'picker-cell--selected': this.isSelected,
       };
     },
     canBeBooked() {
@@ -55,6 +57,11 @@ export default {
       const { slots } = this.deliverySlot;
       return MAX_BOOKINGS_PER_SLOT - slots[this.value].bookings.length;
     },
+    isSelected() {
+      const { date, timeslot } = this.selectedTimeslot;
+      return this.deliverySlot.date === date && this.value === timeslot;
+    },
+    ...mapState(['selectedTimeslot']),
   },
   methods: {
     selectTimeslot() {
@@ -101,6 +108,10 @@ export default {
   }
 
   &--selected {
+    background: #7cbf9d;
+    color: #003c1e;
+    border: 3px solid #003c1e;
+    outline: none;
   }
 }
 </style>

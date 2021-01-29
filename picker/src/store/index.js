@@ -7,10 +7,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     deliverySlots: [],
+    selectedTimeslot: {},
   },
   mutations: {
     SAVE_DELIVERY_SLOTS(state, deliverySlots) {
       state.deliverySlots = deliverySlots;
+    },
+    SELECT_TIMESLOT(state, selectedTimeslot) {
+      state.selectedTimeslot = selectedTimeslot;
     },
   },
   actions: {

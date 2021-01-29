@@ -18,6 +18,25 @@
           "bookings": []
         }
       }
+    },
+    {
+      "date": "2021-01-13",
+      "slots": {
+        "AM": {
+          "bookings": []
+        },
+        "PM": {
+          "bookings": [
+            {
+              "id": "QkEJQkkq",
+              "item": "Kentia Palm"
+            }
+          ]
+        },
+        "EVE": {
+          "bookings": []
+        }
+      }
     }
   ]
 }

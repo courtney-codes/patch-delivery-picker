@@ -29,16 +29,15 @@ export default {
   },
   data() {
     return {
-      selectedTimeslot: {},
       timeslotOptions: AVAILABLE_DELIVERY_SLOTS,
     };
   },
   computed: {
-    ...mapState(['deliverySlots']),
+    ...mapState(['deliverySlots', 'selectedTimeslot']),
   },
   methods: {
     selectTimeslot($event) {
-      this.selectedTimeslot = $event;
+      this.$store.commit('SELECT_TIMESLOT', $event);
     },
     async bookDeliverySlot() {
       try {

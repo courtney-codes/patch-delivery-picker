@@ -63,7 +63,7 @@ const startServer = function startServer(port = process.env.PORT || 3000) {
     // Remove the first date from the response if all of the slots are booked
     const firstDeliverySlot = Object.values(deliverySlots[0].slots);
 
-    if (firstDeliverySlot.every((slot) => slot.booked === true)) {
+    if (firstDeliverySlot.every((slot) => slot.bookings.length >= app.get('maxBookingsPerSlot'))) {
       deliverySlots = deliverySlots.slice(1);
     }
 
